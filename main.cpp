@@ -153,9 +153,14 @@ if (variant == 2){
             for (int k = 0; k < password.size(); k++){ // прохождение по номеру
                 key = k; // to str
                 
-                if (strcmp(password[k],mp[key]) != 0) { // поиск совпадений
-                    err = 1;
-                    break;
+                if (mp.find(key) == mp.end() ) {
+                  // not found
+                } else {
+                  // found
+                    if (strcmp(password[k],mp[key]) != 0) { // поиск совпадений
+                        err = 1;
+                        break;
+                    }
                 }
             }
             
