@@ -94,7 +94,7 @@ if (variant == 2){
     {
         while (getline(myfile, line))
         {
-            cout << line << endl;
+            //cout << line << endl;
             number1_vector.push_back(line); // добавление в вектор первых номеров
         }
     }
@@ -102,16 +102,16 @@ if (variant == 2){
      
     cout << "Закрыт первый файл" << endl;
 
-    ifstream myfile("/Users/kirill/Documents/C++/Wifi/Data/next_phone_codes.txt"); // окрываем файл для чтения
-    if (myfile.is_open())
+    ifstream fin("/Users/kirill/Documents/C++/Wifi/Data/next_phone_codes.txt"); // окрываем файл для чтения
+    if (fin.is_open())
     {
-        while (getline(myfile, line))
+        while (getline(fin, line))
         {
-            cout << line << endl;
+            //cout << line << endl; высокая нагрузка при выводе
             number2_vector.push_back(line); // добавление в вектор вторых номеров
         }
     }
-    myfile.close();     // закрываем файл
+    fin.close();     // закрываем файл
      
     cout << "Закрыт второй файл" << endl;
 
@@ -122,8 +122,8 @@ if (variant == 2){
     //cin >> password;
     for (int i = 0; i < number1_vector.size(); i++){
         cout << "Цикл по номерам\n";
-        for (int i = 0; i < number2_vector.size(); i++){
-            password = number1_vector[i] + number2_vector[i];
+        for (int j = 0; j < number2_vector.size(); j++){
+            password = number1_vector[i] + number2_vector[j];
 
             cout << "Пароль " << password << endl;
 
