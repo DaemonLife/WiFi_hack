@@ -141,13 +141,13 @@ if (variant == 2){
     cout << "Введите SSID" << endl;
     //cin >> SSID;
     string a = "";
+    string b = "";
     bool err = 0;
     //cin >> password;
     for (int i = 0; i < number1_vector.size(); i++){
         cout << "Цикл по номерам\n";
         for (int j = 0; j < number2_vector.size(); j++){
             password = number1_vector[i] + number2_vector[j]; // пароль номер целиком
-            
             err = 0;
             
             for (int k = 0; k < password.size(); k++){ // прохождение по номеру
@@ -157,7 +157,9 @@ if (variant == 2){
                   // not found
                 } else {
                   // found
-                    if (strcmp(password[k],mp[key]) != 0) { // поиск совпадений
+                    a = mp[key];
+                    b = password[k];
+                    if (b.compare(a) != 0){
                         err = 1;
                         break;
                     }
