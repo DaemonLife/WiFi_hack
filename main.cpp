@@ -23,6 +23,7 @@ int main() {
     cout << "Выберите способ подбора пароля" << endl;
     cout << "1) По дате рождения" << endl;
     cout << "2) По номерам телефонов" << endl;
+    cout << "3) По базе данных паролей" << endl;
     cin >> variant;
     //variant = 2;
     // начало даты и конец, котоыре указывает пользователь
@@ -39,7 +40,7 @@ int main() {
         end_year = 2001;
         string line;
         vector<string> data_vector;
-        ifstream myfile ("/Users/kirill/Documents/C++/Wifi/Data/calendar_data.txt");
+        ifstream myfile ("/Users/kirill/Documents/C++/Wifi/Wifi/Wifi/Data/calendar_data.txt");
 
         string temp_str = ""; // для преобразования int к str
         // Чтение файла с датами
@@ -78,12 +79,12 @@ int main() {
             cout << password << endl;
 
             ofstream fout;
-            fout.open("/Users/kirill/Documents/C++/Wifi/start.sh");
+            fout.open("/Users/kirill/Documents/C++/Wifi/Wifi/Wifi/start.sh");
             fout << "#!/usr/bin/env bash" << endl;
             fout << "networksetup -setairportnetwork en0 " << SSID << " " << password << "; echo \"\n\"" <<endl;
             fout.close();
 
-            system("/Users/kirill/Documents/C++/Wifi/start.sh");
+            system("/Users/kirill/Documents/C++/Wifi/Wifi/Wifi/start.sh");
 
         }
 
@@ -111,7 +112,7 @@ if (variant == 2){
 
     // первый файл с номерами
     
-    ifstream myfile("/Users/kirill/Documents/C++/Wifi/Data/phone_codes.txt"); // окрываем файл для чтения
+    ifstream myfile("/Users/kirill/Documents/C++/Wifi/Wifi/Wifi/Data/phone_codes.txt"); // окрываем файл для чтения
     if (myfile.is_open())
     {
         while (getline(myfile, line))
@@ -125,7 +126,7 @@ if (variant == 2){
 
     // второй файл с номерами
     
-    ifstream fin("/Users/kirill/Documents/C++/Wifi/Data/next_phone_codes.txt"); // окрываем файл для чтения
+    ifstream fin("/Users/kirill/Documents/C++/Wifi/Wifi/Wifi/Data/next_phone_codes.txt"); // окрываем файл для чтения
     if (fin.is_open())
     {
         while (getline(fin, line))
@@ -171,7 +172,7 @@ if (variant == 2){
                 cout << "Пароль " << password << endl;
 
                 ofstream fout;
-                fout.open("/Users/kirill/Documents/C++/Wifi/start.sh");
+                fout.open("/Users/kirill/Documents/C++/Wifi/Wifi/Wifi/start.sh");
                 fout << "#!/usr/bin/env bash" << endl;
                 fout << "networksetup -setairportnetwork en0 " << SSID << " " << password << "; echo \"\n\"" <<endl;
                 fout.close();
@@ -184,6 +185,73 @@ if (variant == 2){
     }
 
 } // variant 2
+    
+    if (variant == 3){
+        
+        cout << "Введите длину пароля или введите 0, если длина неизвеста" << endl;
+        int len_par = 0;
+        cin >> len_par;
+        
+        vector<string> par_vector;
+        string line;
+        string password;
+        
+        ifstream myfile("/Users/kirill/Documents/C++/Wifi/Wifi/Wifi/Data/par.txt"); // окрываем файл для чтения
+        if (myfile.is_open())
+        {
+            cout << "открыт" << endl;
+            while (getline(myfile, line))
+            {
+                
+                cout << line.size();
+                if (len_par == 0){
+                    if (line.size() >= 9){
+                        cout << line << endl;
+                        par_vector.push_back(line);
+                    }
+                } else {
+                   if (line.size() == len_par){
+                        cout << line << endl;
+                        par_vector.push_back(line);
+                    }
+                }
+            }
+        }
+        myfile.close();     // закрываем файл
+        cout << "Закрыт файл" << endl;
+        
+        string status = "";
+        for (int i = 0; i < par_vector.size(); i++){
+            
+            status = "";
+            
+            ifstream myfile("/Users/kirill/Documents/C++/Wifi/Wifi/Wifi/status.txt"); // окрываем файл для чтения
+            if (myfile.is_open())
+            {
+                while (getline(myfile, line))
+                {
+                    status = line;
+                }
+            }
+            myfile.close();     // закрываем файл
+            
+            if (status == "err"){
+            
+            
+                password = par_vector[i];
+                cout << "Пароль " << password << endl;
+
+                ofstream fout;
+                fout.open("/Users/kirill/Documents/C++/Wifi/Wifi/Wifi/start.sh");
+                fout << "#!/usr/bin/env bash" << endl;
+                fout << "rm /Users/kirill/Documents/C++/Wifi/Wifi/Wifi/status.txt;" << " networksetup -setairportnetwork en0 " << SSID << "Kiwiphone " << password.substr(0, password.size() - 1) << " | printf \"err\" 1 > /Users/kirill/Documents/C++/Wifi/Wifi/Wifi/status.txt" << "; echo \"\n\"" <<endl;
+                fout.close();
+
+                system("/Users/kirill/Documents/C++/Wifi/Wifi/Wifi/start.sh");
+            }
+        }
+        
+    } // variant 3
 
 
 return 0;
